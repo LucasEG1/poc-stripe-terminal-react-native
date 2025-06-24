@@ -8,7 +8,7 @@ export class Api {
     this.headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
-
+process.env.API_URL = "https://example-terminal-backend-61f1.onrender.com"
     if (!process.env.API_URL) {
       console.error('please set an API_URL for your backend in your .env file');
       throw new Error(
