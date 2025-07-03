@@ -117,26 +117,15 @@ export default function HomeScreen() {
           }}
         />
         <ListItem
-          title="Set reader display"
+          title = "charge payment intent"
           onPress={() => {
-            navigation.navigate('ReaderDisplayScreen');
-          }}
-        />
-        <ListItem
-          title="Store card via Setup Intents"
-          onPress={() => {
-            navigation.navigate('SetupIntentScreen', { discoveryMethod });
-          }}
-        />
-        <ListItem
-          title="In-Person Refund"
-          onPress={() => {
-            navigation.navigate('RefundPaymentScreen', {
+             navigation.navigate('ChargePaymentIntentScreen', {
               simulated,
               discoveryMethod,
             });
           }}
         />
+        
       </List>
       <List title="DATABASE">
         <ListItem

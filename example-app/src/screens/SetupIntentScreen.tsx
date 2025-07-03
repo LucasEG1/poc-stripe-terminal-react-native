@@ -119,7 +119,7 @@ export default function SetupIntentScreen() {
     },
     [addLogs, confirmSetupIntent]
   );
-
+©
   const _collectPaymentMethod = useCallback(
     async (si: SetupIntent.Type) => {
       addLogs({
@@ -135,7 +135,7 @@ export default function SetupIntentScreen() {
       });
       const { setupIntent, error } = await collectSetupIntentPaymentMethod({
         setupIntent: si,
-        customerConsentCollected: true,
+        //customerConsentCollected: true,
         enableCustomerCancellation: enableCustomerCancellation,
       });
       if (error) {

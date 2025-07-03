@@ -97,9 +97,11 @@ process.env.API_URL = "https://example-terminal-backend-61f1.onrender.com"
 
   async createPaymentIntent({
     amount,
-    currency = 'usd',
+    currency = 'eur',
     description = 'Example PaymentIntent',
     payment_method_types,
+    off_session = true,
+    customer = "cus_SasEMoZLEncStD"
   }: Stripe.PaymentIntentCreateParams): Promise<
     Partial<Stripe.PaymentIntent> | { error: Stripe.StripeError }
   > {

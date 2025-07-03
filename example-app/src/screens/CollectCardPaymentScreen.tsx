@@ -21,13 +21,13 @@ import {
 } from '../util/paymentMethodTypes';
 
 const CURRENCIES = [
+  { value: 'eur', label: 'EUR' },
   { value: 'usd', label: 'USD' },
   { value: 'aud', label: 'AUD' },
   { value: 'cad', label: 'CAD' },
   { value: 'chf', label: 'CHF' },
   { value: 'czk', label: 'CZK' },
   { value: 'dkk', label: 'DKK' },
-  { value: 'eur', label: 'EUR' },
   { value: 'gbp', label: 'GBP' },
   { value: 'hkd', label: 'HKD' },
   { value: 'myr', label: 'MYR' },
@@ -59,6 +59,7 @@ export default function CollectCardPaymentScreen() {
   const { api, setLastSuccessfulChargeId } = useContext(AppContext);
 
   const [inputValues, setInputValues] = useState<{
+    customer: string;
     amount: string;
     currency: string;
     connectedAccountId?: string;
@@ -71,8 +72,9 @@ export default function CollectCardPaymentScreen() {
     offlineModeTransactionLimit: string;
     offlineModeStoredTransactionLimit: string;
   }>({
-    amount: '20000',
-    currency: 'usd',
+    customer: "cus_SasEMoZLEncStD",
+    amount: '1500',
+    currency: 'eur',
     captureMethod: 'manual',
     requestedPriority: '',
     offlineBehavior: 'prefer_online',
@@ -144,6 +146,13 @@ export default function CollectCardPaymentScreen() {
       name: 'Create Payment Intent',
       events: [{ name: 'Create', description: 'terminal.createPaymentIntent' }],
     });
+    console.log('Creating payment intent with values:', {
+      amount: inputValues.amount,
+      customer: inputValues.customer,
+      currency: inputValues.currency,
+      connectedAccountId: inputValues.connectedAccountId,
+      captureMethod: inputValues.captureMethod });
+
     const resolvedPaymentMethodTypes = enabledPaymentMethodTypes;
     if (
       enableInterac &&
@@ -156,10 +165,10 @@ export default function CollectCardPaymentScreen() {
     };
     const paymentMethodOptions = {
       card_present: {
-        request_extended_authorization:
-          inputValues.requestExtendedAuthorization,
+        request_extended_authorization: true,
         request_incremental_authorization_support:
           inputValues.requestIncrementalAuthorizationSupport,
+        
         routing: routingPriority,
       },
     };
@@ -168,6 +177,7 @@ export default function CollectCardPaymentScreen() {
     if (discoveryMethod === 'internet') {
       const resp = await api.createPaymentIntent({
         amount: Number(inputValues.amount),
+        customer: inputValues.customer,
         currency: inputValues.currency,
         payment_method_types: resolvedPaymentMethodTypes,
         payment_method_options: paymentMethodOptions,
@@ -238,7 +248,9 @@ export default function CollectCardPaymentScreen() {
         captureMethod: inputValues?.captureMethod,
         offlineBehavior: inputValues?.offlineBehavior,
       });
+      
       paymentIntent = response.paymentIntent;
+      paymentIntent? paymentIntent.id = "pi_3RgnErEH954by8av1hJ8194N": undefined;
       paymentIntentError = response.error;
     }
 
