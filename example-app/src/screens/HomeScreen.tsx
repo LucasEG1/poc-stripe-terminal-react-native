@@ -105,7 +105,6 @@ export default function HomeScreen() {
           }}
         />
       </List>
-
       <List title="COMMON WORKFLOWS">
         <ListItem
           title="Collect card payment"
@@ -117,6 +116,26 @@ export default function HomeScreen() {
           }}
         />
         <ListItem
+          title="In-Person Refund"
+          onPress={() => {
+            navigation.navigate('RefundPaymentScreen', {
+              simulated,
+              discoveryMethod,
+            });
+          }}
+        />
+        <ListItem
+          title = "Add Payment Method to Payment Intent"
+          onPress={() => {
+            navigation.navigate('AddPaymentMethodScreen', {
+              simulated,
+              discoveryMethod,
+            });
+          }}
+        />
+      </List>
+      <List title="SMART READER WORKFLOWS">
+        <ListItem
           title="Set reader display"
           onPress={() => {
             navigation.navigate('ReaderDisplayScreen');
@@ -126,15 +145,6 @@ export default function HomeScreen() {
           title="Store card via Setup Intents"
           onPress={() => {
             navigation.navigate('SetupIntentScreen', { discoveryMethod });
-          }}
-        />
-        <ListItem
-          title="In-Person Refund"
-          onPress={() => {
-            navigation.navigate('RefundPaymentScreen', {
-              simulated,
-              discoveryMethod,
-            });
           }}
         />
       </List>

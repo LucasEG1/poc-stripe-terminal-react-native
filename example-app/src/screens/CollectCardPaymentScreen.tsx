@@ -21,21 +21,7 @@ import {
 } from '../util/paymentMethodTypes';
 
 const CURRENCIES = [
-  { value: 'usd', label: 'USD' },
-  { value: 'aud', label: 'AUD' },
-  { value: 'cad', label: 'CAD' },
-  { value: 'chf', label: 'CHF' },
-  { value: 'czk', label: 'CZK' },
-  { value: 'dkk', label: 'DKK' },
-  { value: 'eur', label: 'EUR' },
-  { value: 'gbp', label: 'GBP' },
-  { value: 'hkd', label: 'HKD' },
-  { value: 'myr', label: 'MYR' },
-  { value: 'nok', label: 'NOK' },
-  { value: 'nzd', label: 'NZD' },
-  { value: 'pln', label: 'PLN' },
-  { value: 'sek', label: 'SEK' },
-  { value: 'sgd', label: 'SGD' },
+  { value: 'eur', label: 'EUR' }
 ];
 
 const CAPTURE_METHODS = [
@@ -59,6 +45,7 @@ export default function CollectCardPaymentScreen() {
   const { api, setLastSuccessfulChargeId } = useContext(AppContext);
 
   const [inputValues, setInputValues] = useState<{
+    customer: string;
     amount: string;
     currency: string;
     connectedAccountId?: string;
@@ -71,8 +58,10 @@ export default function CollectCardPaymentScreen() {
     offlineModeTransactionLimit: string;
     offlineModeStoredTransactionLimit: string;
   }>({
-    amount: '20000',
-    currency: 'usd',
+    //HERE you can set the default values for the payment intent
+    customer: "cus_SasEMoZLEncStD",
+    amount: '1000',
+    currency: CURRENCIES[0].value,
     captureMethod: 'manual',
     requestedPriority: '',
     offlineBehavior: 'prefer_online',
@@ -144,6 +133,20 @@ export default function CollectCardPaymentScreen() {
       name: 'Create Payment Intent',
       events: [{ name: 'Create', description: 'terminal.createPaymentIntent' }],
     });
+    addLogs({
+      name: 'Payment intent details',
+      events: [{
+        name: 'Details',
+        description: 'terminal.createPaymentIntent',
+        metadata: {
+          customer: inputValues.customer,
+          amount: inputValues.amount,
+          currency: inputValues.currency,
+          captureMethod: inputValues.captureMethod,
+        }
+      }]
+    });
+
     const resolvedPaymentMethodTypes = enabledPaymentMethodTypes;
     if (
       enableInterac &&
@@ -213,9 +216,9 @@ export default function CollectCardPaymentScreen() {
       }
       if (
         Number(inputValues.amount) >
-          Number(inputValues.offlineModeTransactionLimit) ||
+        Number(inputValues.offlineModeTransactionLimit) ||
         storedPaymentAmount >
-          Number(inputValues.offlineModeStoredTransactionLimit)
+        Number(inputValues.offlineModeStoredTransactionLimit)
       ) {
         inputValues.offlineBehavior = 'require_online';
       }
@@ -770,9 +773,8 @@ export default function CollectCardPaymentScreen() {
       <List
         bolded={false}
         topSpacing={false}
-        title={`${(Number(inputValues.amount) / 100).toFixed(2)} ${
-          inputValues.currency
-        }`}
+        title={`${(Number(inputValues.amount) / 100).toFixed(2)} ${inputValues.currency
+          }`}
       >
         <ListItem
           color={colors.blue}

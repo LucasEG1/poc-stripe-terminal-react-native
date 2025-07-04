@@ -16,6 +16,7 @@ import UpdateReaderScreen from './screens/UpdateReaderScreen';
 import RefundPaymentScreen from './screens/RefundPaymentScreen';
 import DiscoveryMethodScreen from './screens/DiscoveryMethodScreen';
 import CollectCardPaymentScreen from './screens/CollectCardPaymentScreen';
+import AddPaymentMethodScreen from './screens/AddPaymentMethodScreen';
 import SetupIntentScreen from './screens/SetupIntentScreen';
 import LogListScreen from './screens/LogListScreen';
 import LogScreen from './screens/LogScreen';
@@ -253,6 +254,14 @@ export default function App() {
                 headerBackAccessibilityLabel: 'payment-back',
               }}
               component={PaymentMethodSelectScreen}
+            />
+            <Stack.Screen
+              name="AddPaymentMethodScreen"
+              options={{
+                headerTitle: 'Add Payment Method',
+                headerBackAccessibilityLabel: 'payment-back',
+              }}
+              component={AddPaymentMethodScreen}
             />
             <Stack.Screen
               name="SetupIntentScreen"
